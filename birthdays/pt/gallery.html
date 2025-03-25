@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎂 Birthday Ferris Wheel 🎡</title>
+    <link rel="stylesheet" href="stylegallery.css"> <!-- External CSS -->
+</head>
+<body>
+
+    <!-- 🎈 Floating Balloons -->
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+    <div class="balloon"></div>
+
+    <div class="ferris-wheel" id="ferrisWheel">
+        <div class="outer-circle"></div>
+        <div class="inner-circle"></div>
+        <div class="center"></div>
+    </div>
+
+    <div class="button-container">
+        <button class="nav-button" onclick="location.href='index.html'">Home</button>
+        <button class="nav-button" onclick="location.href='countdown.html'">Countdown</button>
+    </div>
+
+    <script>
+    const ferrisWheel = document.getElementById('ferrisWheel');
+    const center = document.querySelector('.center');
+    const images = ["image1.jpg", "image2.jpg", "image3.jpg", "image4.jpg", "image5.jpg"];
+
+    for (let i = 0; i < 10; i++) {
+        const spoke = document.createElement('div');
+        spoke.className = 'spoke';
+        spoke.style.transform = `rotate(${i * 36}deg)`; // Rotation moved to CSS
+
+        const cabin = document.createElement('div');
+        cabin.className = 'cabin';
+        cabin.style.transform = `rotate(${-i * 36}deg)`;
+        spoke.appendChild(cabin);
+        ferrisWheel.appendChild(spoke);
+
+        // Assign a different image to each cabin
+        const imgIndex = i % images.length;
+        const imgPath = images[imgIndex];
+
+        cabin.addEventListener('mouseenter', () => {
+            center.style.background = `url('${imgPath}') center/cover no-repeat`;
+            center.classList.add('expanded');
+            cabin.classList.add('viewed');
+        });
+
+        cabin.addEventListener('mouseleave', () => {
+            center.classList.remove('expanded');
+            center.style.background = ''; 
+        });
+    }
+
+    // Confetti effect
+    for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        document.body.appendChild(confetti);
+    }
+    </script>
+
+</body>
+</html>

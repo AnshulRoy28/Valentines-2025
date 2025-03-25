@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Birthday Countdown</title>
+    <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700&family=Pacifico&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="scriptcountdown.css">
+</head>
+<body>
+    <h1>🎉 Birthday Countdown! 🎂</h1>
+    
+    <div class="emoji-container">
+        <span class="birthday-emoji">🎈</span>
+        <span class="birthday-emoji" style="animation-delay: 0.2s">🎁</span>
+        <span class="birthday-emoji" style="animation-delay: 0.4s">🎊</span>
+        <span class="birthday-emoji" style="animation-delay: 0.6s">🎀</span>
+        <span class="birthday-emoji" style="animation-delay: 0.8s">🍰</span>
+    </div>
+    <div class="nav-buttons">
+        <a href="index.html" class="nav-button">Home</a>
+        <a href="gallery.html" class="nav-button">Gallery</a>
+    </div>
+    
+    <div id="timer">Loading...</div>
+    <p class="message" id="message"></p>
+
+    <!-- Clapping sound -->
+    <audio id="clapSound" src="clapping.mp3" preload="auto"></audio>
+    <button class="button">Click Me!</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function createConfetti() {
+                const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FFA07A'];
+                for (let i = 0; i < 50; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 5 + 's';
+                    confetti.style.width = Math.random() * 10 + 5 + 'px';
+                    confetti.style.height = Math.random() * 10 + 5 + 'px';
+                    document.body.appendChild(confetti);
+                }
+            }
+
+            function createFireworks() {
+                const colors = ['#FFD700', '#FF69B4', '#87CEEB', '#98FB98', '#FFA07A'];
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        for (let j = 0; j < 12; j++) {
+                            const firework = document.createElement('div');
+                            firework.className = 'firework';
+                            firework.style.left = Math.random() * 100 + 'vw';
+                            firework.style.top = Math.random() * 50 + 'vh';
+                            firework.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                            firework.style.setProperty('--tx', (Math.random() - 0.5) * 100 + 'px');
+                            firework.style.setProperty('--ty', (Math.random() - 0.5) * 100 + 'px');
+                            firework.style.animationDelay = (Math.random() * 0.5) + 's';
+                            document.body.appendChild(firework);
+                            
+                            setTimeout(() => {
+                                firework.remove();
+                            }, 1000);
+                        }
+                    }, i * 300);
+                }
+            }
+
+            const birthday = new Date(2025, 2, 25, 22, 6, 50).getTime(); // March 25, 2025 21:22:50
+            const timer = document.getElementById("timer");
+            const message = document.getElementById("message");
+            const clapSound = document.getElementById("clapSound");
+            let hasCelebrated = false;
+
+            function updateCountdown() {
+                let now = new Date().getTime();
+                let difference = birthday - now;
+
+                if (difference > 0) {
+                    let days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                    let hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((difference % (1000 * 60)) / 1000);
+                    
+                    timer.innerHTML = `${days}<span style="font-size:1.5rem"> days </span> 
+                                      ${hours}<span style="font-size:1.5rem"> hrs </span> 
+                                      ${minutes}<span style="font-size:1.5rem"> mins </span> 
+                                      ${seconds}<span style="font-size:1.5rem"> secs</span>`;
+                    
+                    message.textContent = "Until [Name]'s Special Day!";
+                } else {
+                    if (!hasCelebrated) {
+                        hasCelebrated = true;
+                        document.body.classList.add('celebrate');
+                        document.body.style.background = "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://source.unsplash.com/1600x900/?celebration,fireworks') no-repeat center center/cover";
+                        createFireworks();
+                        
+                        // Play clapping sound
+                        clapSound.play().catch(error => console.log("Audio play error:", error));
+                        
+                        // Continue fireworks every 3 seconds
+                        setInterval(createFireworks, 3000);
+                    }
+                    
+                    let elapsed = now - birthday;
+                    let days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+                    let hours = Math.floor((elapsed % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    let minutes = Math.floor((elapsed % (1000 * 60 * 60)) / (1000 * 60));
+                    let seconds = Math.floor((elapsed % (1000 * 60)) / 1000);
+                    
+                    timer.innerHTML = `🎉 ${days}<span style="font-size:1.5rem"> days </span> 
+                                      ${hours}<span style="font-size:1.5rem"> hrs </span> 
+                                      ${minutes}<span style="font-size:1.5rem"> mins </span> 
+                                      ${seconds}<span style="font-size:1.5rem"> secs</span> 🎉`;
+                    
+                    message.innerHTML = "Since you Turned 20! 😂<br>Congratulations, you're old now! 🤣🎉";
+
+                }
+            }
+
+            document.querySelector(".button").addEventListener("click", function () {
+                clapSound.play();
+            });
+
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+            createConfetti();
+        });
+    </script>
+</body>
+</html>

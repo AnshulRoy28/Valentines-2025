@@ -1,0 +1,9 @@
+Fonts used in this design:
+
+Font: EB Garamond
+Author: Georg Duffner
+Url: https://fonts.google.com/specimen/EB+Garamond
+
+Font: Birthstone Bounce
+Author: Robert Leuschke
+Url: https://fonts.google.com/specimen/Birthstone+Bounce
